@@ -1,0 +1,32 @@
+# iroh-relay 1.1.0 -- https://github.com/n0-computer/iroh/tree/main/iroh-relay
+#
+# Ports 80/443 on this box may be taken by its own web server, hence the
+# dedicated ports. Public URL for clients: https://<relay-host>:4443
+
+enable_relay = true
+
+# When a [tls] section is present, the HTTP socket only serves the
+# captive-portal probe; the relay itself moves to https_bind_addr.
+http_bind_addr = "[::]:4480"
+
+# QUIC address discovery (needs TLS). 7842 is the upstream default.
+enable_quic_addr_discovery = true
+
+enable_metrics = true
+metrics_bind_addr = "127.0.0.1:9090"
+
+# Only let clients in with a bearer token:
+#   Authorization: Bearer <token>   or   ?token=<token>
+# Generate one: openssl rand -base64 30
+access.shared_token = ["<relay-shared-token>"]
+
+[tls]
+https_bind_addr = "[::]:4443"
+quic_bind_addr  = "[::]:7842"
+
+# Reloading = re-read cert/key from disk every 24h, no service restart.
+# The files are placed there by the certbot deploy hook,
+# see relay/certbot-deploy-hook.sh
+cert_mode = "Reloading"
+manual_cert_path = "/etc/iroh-relay/certs/fullchain.pem"
+manual_key_path  = "/etc/iroh-relay/certs/privkey.pem"

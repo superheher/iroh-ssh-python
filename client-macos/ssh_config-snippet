@@ -1,0 +1,18 @@
+# ~/.ssh/config on the client -- reaching targets through the relay.
+# The ProxyCommand runs irohssh.py in stdio mode for the session only.
+# %d is the home directory (expanded by ssh itself).
+# <endpoint-id> is the target's NodeId from its log (journalctl / serve.log).
+
+Host target-a
+    User <user>
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+    ProxyCommand %d/.local/share/iroh-ssh/venv/bin/python %d/.local/share/iroh-ssh/irohssh.py stdio <endpoint-id-of-target-a>
+    ServerAliveInterval 30
+
+Host target-b
+    User <user>
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+    ProxyCommand %d/.local/share/iroh-ssh/venv/bin/python %d/.local/share/iroh-ssh/irohssh.py stdio <endpoint-id-of-target-b>
+    ServerAliveInterval 30

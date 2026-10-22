@@ -1,0 +1,34 @@
+# /etc/systemd/system/iroh-relay.service
+[Unit]
+Description=iroh relay server
+Documentation=https://github.com/n0-computer/iroh/tree/main/iroh-relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=iroh
+Group=iroh
+Environment=RUST_LOG=info
+ExecStart=/usr/local/bin/iroh-relay --config-path /etc/iroh-relay/config.toml
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target

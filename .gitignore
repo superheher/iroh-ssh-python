@@ -1,0 +1,4 @@
+# machine-specific local secrets/notes, not for git
+.secrets/
+__pycache__/
+*.pyc

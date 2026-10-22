@@ -1,0 +1,14 @@
+# ~/.config/systemd/user/iroh-ssh.service
+[Unit]
+Description=iroh-ssh: local sshd exposed over a self-hosted iroh relay
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/.local/share/iroh-ssh/venv/bin/python %h/.local/share/iroh-ssh/irohssh.py serve 22
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
